@@ -11,17 +11,39 @@
     <main class="app-main">
       <header class="app-head">
         <span class="head-desc">面向航班保障、机位分配、廊桥靠接、摆渡车调度、行李装卸、航油加注、除冰作业与延误处置的一体化机场地面保障作业工作台。</span>
-        <span class="head-user">当前值班：{{ store.operator }} · {{ store.shiftLabel }}</span>
+        <span class="head-user">
+          切换身份：
+          <select class="identity-select" :value="store.currentIdentityId" @change="onSwitch(($event.target as HTMLSelectElement).value)">
+            <option v-for="item in store.identities" :key="item.id" :value="item.id">
+              {{ roleTag(item.role) }} · {{ item.name }}
+            </option>
+          </select>
+          当前值班：{{ store.operator }} · {{ store.shiftLabel }}
+        </span>
       </header>
       <RouterView />
     </main>
   </div>
 </template>
 
+<style scoped>
+.identity-select { font-size: 12px; padding: 2px 4px; border-radius: 6px; border: 1px solid var(--border); margin: 0 4px; }
+</style>
+
 <script setup lang="ts">
 import { useSessionStore } from '@/stores/session'
 
 const store = useSessionStore()
 
-const navItems = [{ label: "运营概览", path: "/" }, { label: "航班保障", path: "/flight" }, { label: "机位分配", path: "/stand" }, { label: "廊桥靠接", path: "/bridge" }, { label: "摆渡车调度", path: "/shuttle" }, { label: "行李装卸", path: "/baggage" }, { label: "机务勤务", path: "/line" }, { label: "航油加注", path: "/fueling" }, { label: "除冰作业", path: "/deice" }, { label: "地面电源", path: "/gpu" }, { label: "航空器牵引", path: "/tow" }, { label: "航空配餐", path: "/catering" }, { label: "客舱清洁", path: "/cabin" }, { label: "保障班组", path: "/team" }, { label: "特种车辆维保", path: "/vehmaint" }, { label: "要客保障", path: "/vip" }, { label: "延误处置", path: "/delay" }, { label: "机坪安全巡查", path: "/apron" }, { label: "保障资源调度", path: "/resplan" }]
+const navItems = [{ label: "运营概览", path: "/" }, { label: "航司地面服务协议", path: "/agreement" }, { label: "协议调度工作台", path: "/agreement-dispatch" }, { label: "航班保障", path: "/flight" }, { label: "机位分配", path: "/stand" }, { label: "廊桥靠接", path: "/bridge" }, { label: "摆渡车调度", path: "/shuttle" }, { label: "行李装卸", path: "/baggage" }, { label: "机务勤务", path: "/line" }, { label: "航油加注", path: "/fueling" }, { label: "除冰作业", path: "/deice" }, { label: "地面电源", path: "/gpu" }, { label: "航空器牵引", path: "/tow" }, { label: "航空配餐", path: "/catering" }, { label: "客舱清洁", path: "/cabin" }, { label: "保障班组", path: "/team" }, { label: "特种车辆维保", path: "/vehmaint" }, { label: "要客保障", path: "/vip" }, { label: "延误处置", path: "/delay" }, { label: "机坪安全巡查", path: "/apron" }, { label: "保障资源调度", path: "/resplan" }]
+
+function onSwitch(id: string) {
+  store.switchIdentity(id)
+}
+
+function roleTag(role: string): string {
+  if (role === 'admin') return '管理员'
+  if (role === 'airline_contact') return '航司对接人'
+  return '地面班组'
+}
 </script>

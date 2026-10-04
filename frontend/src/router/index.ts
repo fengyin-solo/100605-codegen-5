@@ -19,6 +19,8 @@ const Vip = () => import('@/views/vip/index.vue')
 const Delay = () => import('@/views/delay/index.vue')
 const Apron = () => import('@/views/apron/index.vue')
 const Resplan = () => import('@/views/resplan/index.vue')
+const Agreement = () => import('@/views/agreement/index.vue')
+const AgreementDispatch = () => import('@/views/agreement/dispatch.vue')
 
 const router = createRouter({
   history: createWebHistory(),
@@ -42,6 +44,8 @@ const router = createRouter({
     { path: '/delay', name: 'delay', component: Delay },
     { path: '/apron', name: 'apron', component: Apron },
     { path: '/resplan', name: 'resplan', component: Resplan },
+    { path: '/agreement', name: 'agreement', component: Agreement },
+    { path: '/agreement-dispatch', name: 'agreement-dispatch', component: AgreementDispatch },
   ],
 })
 
